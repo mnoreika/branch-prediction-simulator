@@ -1,4 +1,6 @@
+import math
 from trace import Trace
+from counter import Counter
 
 def readTraceFile():
     with open("branchtrace.out") as file:
@@ -20,33 +22,31 @@ def alwaysBP(traces, prediction):
     
     return miss_rate
 
-def twoBitBP(traces):
+def twoBitBP(traces, table_size):
     miss_rate = 0
-
+    predict_table = {}
+    index_size = round(math.log2(table_size))
+     
     for trace in traces:
-        #Predict and update counter
-        if trace.counter[0] == 0:
-            if trace.taken == 1:
-                miss_rate += 1
-                if trace.counter[1] == 0:
-                    trace.counter[1] = 1
-                else:
-                    trace.counter[0] = 1;
-                    trace.counter[1] = 0;
-            else:
-                trace.counter[1] = 0
-        else:
-            if trace.taken == 0:
-                miss_rate += 1
-                if trace.counter[1] == 0:
-                    trace
+        index = bin(int(trace.address))[-index_size:]
+        print (index)
+        
+        if index not in predict_table:
+            predict_table[index] = Counter()
+        
+        counter = predict_table[index]
 
-                
+        prediction = counter.predict()
+        
+        if (prediction != trace.taken):
+            miss_rate += 1
+        
+        counter.update(trace.taken)
 
-
-    # Update counter
-
+    return miss_rate
 
 traces = readTraceFile()
+    # Update counter
 
+print(twoBitBP(traces, 512) / len(traces))
 
