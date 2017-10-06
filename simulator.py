@@ -45,8 +45,26 @@ def twoBitBP(traces, table_size):
 
     return miss_rate
 
+def correlatingBP(traces, table_size):
+    miss_rate = 0
+    predict_table = {}
+    index_size = round(math.log2(table_size))
+
+    for trace in traces:
+        index = bin(int(trace.address))[-index_size:] 
+
+        if index not in predict_table:
+            predict_table[index] = CorrCounter()
+
+        corr_counter = predict_table[index]
+
+        prediction = counter.predict()
+
+        if (prediction != trace.taken):
+            miss_rate += 1
+        
+        corr_counter.update(trace.taken)
+
+
+
 traces = readTraceFile()
-    # Update counter
-
-print(twoBitBP(traces, 512) / len(traces))
-
