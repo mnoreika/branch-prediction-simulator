@@ -1,4 +1,4 @@
-import math
+import sys
 from trace import Trace
 from counter import Counter
 from register import Register
@@ -19,10 +19,6 @@ def readTraceFile():
  
         return traces           
 
-def xor(binaryA, binaryB):
-    result = int(binaryA, 2) ^ int(binaryB, 2)
-    return '{0:0{1}b}'.format(result, len(binaryA))
-
 def simulate(predictor, traces): 
     miss_rate = 0
 
@@ -34,36 +30,42 @@ def simulate(predictor, traces):
         
         predictor.update(trace.address, trace.taken)
      
-    return miss_rate
-
-def gsharedBP(traces, table_size):
-    miss_rate = 0
-    predict_table = {}
-    index_size = round(math.log2(table_size))
-    register = Register(index_size)
-
-    for trace in traces:
-        address_bits = bin(int(trace.address))[-index_size:]
-        index = xor(address_bits, register.read())
-        
-        if index not in predict_table:
-            predict_table[index] = Counter()
-
-        counter = predict_table[index]
-
-        prediction = counter.predict()
-    
-        if (prediction != trace.taken):
-            miss_rate += 1
-        
-        counter.update(trace.taken) 
-        register.record(trace.taken)
-
-    return miss_rate
-
+    return (miss_rate / len(traces)) * 100
 
 
 traces = readTraceFile()
-predictor3 = GShareBP(512, 9)
-print (simulate(predictor3, traces)) 
-print (gsharedBP(traces, 512))
+
+# Default values
+table_size = 512
+register_size = 9
+
+if (len(sys.argv) > 1): 
+    table_size = int(sys.argv[1])
+
+if (len(sys.argv) > 2):
+    register_size = int(sys.argv[2])
+
+# Simulate branch predictors
+predictor = AlwaysBP(1)
+always_taken_result = simulate(predictor, traces)
+
+predictor = AlwaysBP(0)
+always_ntaken_result = simulate(predictor, traces)
+
+predictor = TwoBitBP(table_size)
+two_bit_result = simulate(predictor, traces)
+
+predictor = CorrelatingBP(table_size, register_size)
+correlated_result = simulate(predictor, traces)
+
+predictor = GShareBP(table_size, register_size)
+gshare_result = simulate(predictor, traces)
+
+
+print ("AlwaysTaken: ", always_taken_result) 
+print ("AlwaysNotTaken: ", always_ntaken_result)
+print ("TwoBit: ", two_bit_result)
+print ("Correlated: ", correlated_result)
+print ("GShared: ", gshare_result)
+
+
