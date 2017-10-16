@@ -16,8 +16,6 @@ class GShareBP():
 
     def findCounter(self, address):
         index = self.xor(bin(int(address[:self.key_size])), self.register.read())
-        
-        print (address[:self.key_size])
 
         counter = self.table.getEntry(index, Counter())
 
