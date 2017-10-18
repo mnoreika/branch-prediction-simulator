@@ -8,7 +8,7 @@ from correlating_bp import CorrelatingBP
 from gshare_bp import GShareBP
 
 
-table_size = 1024
+table_size = 512
 register_size = 3
 
 # Always taken with all benchmarks

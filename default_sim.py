@@ -9,7 +9,7 @@ from onebit_bp import OneBitBP
 from twobit_bp import TwoBitBP
 from correlating_bp import CorrelatingBP
 from gshare_bp import GShareBP
-
+from profile_bp import ProfileBP
 
 
 # Default values
@@ -46,12 +46,16 @@ correlated_result = sim.simulate(predictor)
 predictor = GShareBP(table_size, register_size)
 gshare_result = sim.simulate(predictor)
 
+predictor = ProfileBP(table_size, register_size, sim.traces)
+profile_result = sim.simulate(predictor)
+
 print ("AlwaysTaken: ", always_taken_result) 
 print ("AlwaysNotTaken: ", always_ntaken_result)
 print ("OneBit: ", one_bit_result)
 print ("TwoBit: ", two_bit_result)
 print ("Correlated: ", correlated_result)
 print ("GShared: ", gshare_result)
+print ("Profile: ", profile_result)
 
 
 

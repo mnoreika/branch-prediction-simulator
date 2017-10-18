@@ -1,3 +1,4 @@
+/* Code source http://people.sc.fsu.edu/~jburkardt/c_src/linpack_bench/linpack_bench.html*/
 # include <stdlib.h>
 # include <stdio.h>
 # include <math.h>

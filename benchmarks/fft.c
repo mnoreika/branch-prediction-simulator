@@ -1,3 +1,4 @@
+/* Code source: http://web.mit.edu/~emin/www.old/source_code/fft/fft.c*/
 #include <stdio.h>
 #define SIN_2PI_16 0.38268343236508978
 #define SIN_4PI_16 0.707106781186547460
