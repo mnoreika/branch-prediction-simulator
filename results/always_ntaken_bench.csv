@@ -1,7 +1,7 @@
 benchmark,missrate
-fibonacci,87.2072
 fft,52.630341503556096
 insersort,52.723235156615246
 hello,55.796503010779745
+fibonacci,87.2072
 oddeven,56.132704338016616
 linpack,96.7726

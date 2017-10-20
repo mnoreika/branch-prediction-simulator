@@ -4,10 +4,9 @@ from gshare_bp import GShareBP
 
 class ProfileBP():
 
-    def __init__(self, table_size, register_size, traces):
+    def __init__(self, table_size, register_size, traces, threshold):
         self.index_size = round(math.log2(table_size))
-        self.classifier = BranchClassifier()
-        self.profile = self.classifier.generateProfile(traces, self.index_size)
+        self.profile = BranchClassifier.generateProfile(traces, self.index_size, threshold)
         self.gshare_predictor = GShareBP(table_size, register_size)
 
     def predict(self, address):

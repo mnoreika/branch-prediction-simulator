@@ -15,6 +15,7 @@ from profile_bp import ProfileBP
 # Default values
 table_size = 512
 register_size = 9
+threshold = 60
 
 if (len(sys.argv) > 1):
     trace_file = sys.argv[1]
@@ -24,6 +25,10 @@ if (len(sys.argv) > 2):
 
 if (len(sys.argv) > 3):
     register_size = int(sys.argv[3])
+
+if (len(sys.argv) > 4):
+    threshold = int(sys.argv[4])
+
 
 # Simulate branch predictors
 sim = Simulator(trace_file)
@@ -46,7 +51,7 @@ correlated_result = sim.simulate(predictor)
 predictor = GShareBP(table_size, register_size)
 gshare_result = sim.simulate(predictor)
 
-predictor = ProfileBP(table_size, register_size, sim.traces)
+predictor = ProfileBP(table_size, register_size, sim.traces, threshold)
 profile_result = sim.simulate(predictor)
 
 print ("AlwaysTaken: ", always_taken_result) 

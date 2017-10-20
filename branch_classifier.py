@@ -1,9 +1,6 @@
 class BranchClassifier():
-    
-    def __init__(self):
-        self.threshold = 60
 
-    def generateProfile(self, traces, index_size):
+    def generateProfile(traces, index_size, threshold):
         taken_count = {}
         ntaken_count = {}
         total_count = {}
@@ -30,11 +27,11 @@ class BranchClassifier():
             ntaken_rate = ntaken_count[branch] / total_count[branch] * 100
           
             # Classify as always taken
-            if taken_rate >= self.threshold:
+            if taken_rate >= threshold:
                 profile[branch] = 1
 
             # Classify as never taken
-            elif ntaken_rate >= self.threshold:
+            elif ntaken_rate >= threshold:
                 profile[branch] = 0
 
             # Classify as hard to predict
